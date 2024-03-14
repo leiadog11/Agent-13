@@ -40,13 +40,18 @@ public class PauseMenu : MonoBehaviour
     {
         if(pause)
         {
-            pauseMenu.SetActive(false);
+            resumeButton.SetActive(false);
+            optionsButton.SetActive(false);
+            menuButton.SetActive(false);
+            exitButton.SetActive(false);
+            volumeSlider.SetActive(false);
+            subtitlesCheckbox.SetActive(false);
+            backButton.SetActive(false);
             pause = false;
             Time.timeScale = 1;
         }
         else if(!pause)
         {
-            pauseMenu.SetActive(true);
             pause = true;
             Time.timeScale = 0;
             resumeButton.SetActive(true);
@@ -62,7 +67,13 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         pause = false;
-        pauseMenu.SetActive(false);
+        resumeButton.SetActive(false);
+        optionsButton.SetActive(false);
+        menuButton.SetActive(false);
+        exitButton.SetActive(false);
+        volumeSlider.SetActive(false);
+        subtitlesCheckbox.SetActive(false);
+        backButton.SetActive(false);
         Time.timeScale = 1;
     }
 
