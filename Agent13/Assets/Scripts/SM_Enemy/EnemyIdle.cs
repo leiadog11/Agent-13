@@ -10,7 +10,7 @@ public class EnemyIdle : EnemyState
 
     public override void OnStateEnter()
     {
-       
+        esc.animator.SetInteger("AnimationState", 0);
     }
 
     public override void CheckTransitions()
@@ -21,11 +21,34 @@ public class EnemyIdle : EnemyState
             esc.SetState(new EnemyNavigation(esc));
             canChange = false;
         }
+
+        if (esc.found && esc.player.GetComponent<Invisible>().invisible == false)
+        {
+            esc.source.clip = esc.hey;
+            esc.source.Play();
+            esc.animator.SetInteger("AnimationState", 2);
+            esc.StartCoroutine(WaitForPoint());
+            esc.SetState(new EnemyFound(esc));
+        }
+
+        float dist2 = Vector3.Distance(esc.transform.position, esc.player.transform.position);
+        if (dist2 < 5f && esc.player.GetComponent<Invisible>().invisible == false)
+        {
+            esc.source.clip = esc.hey;
+            esc.source.Play();
+            esc.animator.SetInteger("AnimationState", 2);
+            esc.StartCoroutine(WaitForPoint());
+            esc.SetState(new EnemyFound(esc));
+        }
     }
 
     public override void Act()
     {
-
+        esc.CastRay(esc.transform.forward); //Forward
+        esc.CastRay(Quaternion.AngleAxis(-30, esc.transform.up) * esc.transform.forward); // Slightly left
+        esc.CastRay(Quaternion.AngleAxis(30, esc.transform.up) * esc.transform.forward); // Slightly right
+        esc.CastRay(Quaternion.AngleAxis(-15, esc.transform.up) * esc.transform.forward); // Very Slightly left
+        esc.CastRay(Quaternion.AngleAxis(15, esc.transform.up) * esc.transform.forward); // Very Slightly right
     }
 
     public override void OnStateExit()
@@ -37,5 +60,11 @@ public class EnemyIdle : EnemyState
     {
         yield return new WaitForSeconds(3);
         canChange = true;
+    }
+
+    private IEnumerator WaitForPoint()
+    {
+        yield return new WaitForSeconds(1);
+        esc.SetState(new EnemyFound(esc));
     }
 }

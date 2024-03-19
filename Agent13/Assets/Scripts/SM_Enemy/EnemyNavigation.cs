@@ -12,6 +12,7 @@ public class EnemyNavigation : EnemyState
 
     public override void OnStateEnter()
     {
+        esc.animator.SetInteger("AnimationState", 1);
         CurrentDestination = esc.RandomDestination();
         esc.found = false;
     }
@@ -26,20 +27,24 @@ public class EnemyNavigation : EnemyState
 
         if (esc.found && esc.player.GetComponent<Invisible>().invisible == false)
         {
-            esc.ChangeMaterial();
-            esc.SetState(new EnemyFound(esc));
+            esc.source.clip = esc.hey;
+            esc.source.Play();
+            esc.animator.SetInteger("AnimationState", 2);
+            esc.StartCoroutine(WaitForPoint());
+
         }
 
         float dist2 = Vector3.Distance(esc.transform.position, esc.player.transform.position);
         if (dist2 < 5f && esc.player.GetComponent<Invisible>().invisible == false)
         {
-            esc.ChangeMaterial();
-            esc.SetState(new EnemyFound(esc));
+            esc.source.clip = esc.hey;
+            esc.source.Play();
+            esc.animator.SetInteger("AnimationState", 2);
+            esc.StartCoroutine(WaitForPoint());
         }
 
         if (esc.cc.GetComponent<CameraController>().alert == true)
         {
-            esc.ChangeMaterial();
             esc.SetState(new EnemyToCamera(esc));
         }
 
@@ -47,7 +52,8 @@ public class EnemyNavigation : EnemyState
 
     public override void Act()
     {
-        esc.footsteps.Play();
+        esc.source.clip = esc.footsteps;
+        esc.source.Play();
         esc.m_Agent.destination = CurrentDestination.position;
 
         esc.CastRay(esc.transform.forward); //Forward
@@ -63,6 +69,10 @@ public class EnemyNavigation : EnemyState
         esc.found = false;
     }
 
-    
+    private IEnumerator WaitForPoint()
+    {
+        yield return new WaitForSeconds(1);
+        esc.SetState(new EnemyFound(esc));
+    }
 
 }

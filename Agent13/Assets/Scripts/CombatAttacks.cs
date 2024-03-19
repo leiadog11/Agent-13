@@ -6,8 +6,13 @@ public class CombatAttacks : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public GameObject prefabToSpawn;
-    public float spawnDelay = 2f;
+    public GameObject spawnedObject;
+    public GameObject player;
+    public AudioSource source;
+    public AudioClip block;
+    public AudioClip hit;
     public float objectLifetime = 5f; // Maximum time before the instantiated object is destroyed
+    public float way;
 
     private float timer = 0f;
 
@@ -20,24 +25,34 @@ public class CombatAttacks : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Countdown the timer
-        timer -= Time.deltaTime;
+        
+    }
 
-        // Spawn the prefab every 2 seconds
-        if (timer <= 0f)
+    public void Spawn()
+    {
+        spawnedObject = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
+        
+
+        // Make the spawned object a child of the spawner
+        if (spawnedObject != null)
+            spawnedObject.transform.parent = transform;
+
+        // Move the spawned object on the X-axis
+        if (way == 1)
         {
-            GameObject spawnedObject = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
-
-            // Make the spawned object a child of the spawner
-            if (spawnedObject != null)
-                spawnedObject.transform.parent = transform;
-
-            Destroy(spawnedObject, objectLifetime); // Destroy the instantiated object after objectLifetime seconds
-
-            // Move the spawned object on the X-axis
             StartCoroutine(MoveObject(spawnedObject, Vector3.right));
-
-            timer = spawnDelay;
+        }
+        else if (way == 2)
+        {
+            StartCoroutine(MoveObject(spawnedObject, Vector3.down));
+        }
+        else if (way == 3)
+        {
+            StartCoroutine(MoveObject(spawnedObject, Vector3.left));
+        }
+        else if (way == 4)
+        {
+            StartCoroutine(MoveObject(spawnedObject, Vector3.up));
         }
     }
 
@@ -49,7 +64,20 @@ public class CombatAttacks : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            obj.transform.Translate(direction * moveSpeed * Time.deltaTime);
+            obj.transform.Translate((way * direction) * moveSpeed * Time.deltaTime);
+            if (spawnedObject.GetComponent<Attacks>().result == 0)
+            {
+                source.clip = block;
+                source.Play();
+               Destroy(spawnedObject);
+            }
+            else if (spawnedObject.GetComponent<Attacks>().result == 1)
+            {
+                source.clip = hit;
+                source.Play();
+                //player.health - 5
+                Destroy(spawnedObject);
+            }
             elapsedTime += Time.deltaTime;
             yield return null;
         }

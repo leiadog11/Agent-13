@@ -6,8 +6,15 @@ using UnityEngine.AI;
 
 public class EnemyStateController : MonoBehaviour
 {
+    public Animator animator;
     public GameObject player;
-    public GameObject playerUI;
+    public GameObject playerMove;
+    public GameObject playerTurn;
+    public GameObject combatGrid;
+    public GameObject leftSpawn;
+    public GameObject topSpawn;
+    public GameObject rightSpawn;
+    public GameObject bottomSpawn;
     public GameObject cc;
     public EnemyState currentState;
     public NavMeshAgent m_Agent;
@@ -15,18 +22,21 @@ public class EnemyStateController : MonoBehaviour
     public LayerMask playerLayer;
     public float raycastDistance = 15f;
     public bool found;
-    public AudioSource footsteps;
-    private Renderer rend;
-    private int currentIndex = 0;
+    public AudioSource source;
+    public AudioClip footsteps;
+    public AudioClip hey;
+    public AudioClip running;
+    public AudioClip enemyHit;
+    public AudioClip finalHit;
     [SerializeField] private List<Transform> movePositions = new List<Transform>();
+    public float speed;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        speed = GetComponent<NavMeshAgent>().speed;
         m_Agent = GetComponent<NavMeshAgent>();
-        rend = transform.GetChild(1).GetComponent<Renderer>();
-        rend.material = materials[currentIndex];
         SetState(new EnemyIdle(this));
     }
 
@@ -60,12 +70,6 @@ public class EnemyStateController : MonoBehaviour
         }
 
         return null;
-    }
-    public void ChangeMaterial()
-    {
-        currentIndex = (currentIndex + 1) % materials.Length;
-
-        rend.material = materials[currentIndex];
     }
 
     public void CastRay(Vector3 direction)

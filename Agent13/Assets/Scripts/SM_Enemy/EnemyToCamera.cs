@@ -6,9 +6,16 @@ public class EnemyToCamera : EnemyState
 {
     public EnemyToCamera(EnemyStateController esc) : base(esc) { }
 
+    public override void OnStateEnter()
+    {
+        esc.animator.SetInteger("AnimationState", 4);
+        esc.speed += 15;
+    }
+
     public override void Act()
     {
-        esc.footsteps.Play();
+        esc.source.clip = esc.running;
+        esc.source.Play();
         esc.m_Agent.destination = esc.cc.GetComponent<CameraController>().cameraPos.position;
     }
 
@@ -17,8 +24,7 @@ public class EnemyToCamera : EnemyState
         float dist = Vector3.Distance(esc.transform.position, esc.cc.GetComponent<CameraController>().cameraPos.position);
         if (dist < 5f)
         {
-            esc.ChangeMaterial();
-            esc.ChangeMaterial();
+            esc.speed -= 15;
             esc.SetState(new EnemyIdle(esc));
             esc.cc.GetComponent<CameraController>().alert = false;
         }
