@@ -11,8 +11,8 @@ public class EnemyFound : EnemyState
 
     public override void OnStateEnter()
     {
-        //esc.m_Agent.speed += 5;
-        //esc.m_Agent.acceleration += 2;
+        esc.m_Agent.speed = 8;
+        esc.m_Agent.acceleration = 10;
     }
 
     public override void CheckTransitions()
@@ -39,6 +39,8 @@ public class EnemyFound : EnemyState
 
     public override void OnStateExit()
     {
+        esc.m_Agent.speed = 5;
+        esc.m_Agent.acceleration = 8;
         esc.m_Agent.destination = esc.transform.position;
     }
 }

@@ -12,15 +12,18 @@ public class EnemyAttack : EnemyState
 {
     public EnemyAttack(EnemyStateController esc) : base(esc) { }
 
-    private int health = 20;
-    private int counter = 0;
+    private int health;
+    private int counter;
     int randomAttack = Random.Range(1, 6);
-    private bool canAttack;
+    private bool canAttack, getHit;
     private Vector3 lastPos;
+    private Vector3 mopPos;
     public float xOffset, yOffset, zOffset;
 
     public override void OnStateEnter()
     {
+        counter = 0;
+
         //set player move speed and turn speed to 0
         esc.move.SetActive(false);
         esc.turn.SetActive(false);
@@ -33,6 +36,7 @@ public class EnemyAttack : EnemyState
         //else: tutorial
 
         esc.combat = true;
+        getHit = false;
 
         //teleport enemy and player to combat grid
         lastPos = esc.player.transform.position;
@@ -40,6 +44,8 @@ public class EnemyAttack : EnemyState
 
         //bring combat grid in
         esc.combatGrid.GetComponent<Animator>().SetBool("found", true);
+        health = 3;
+        esc.enemyHealth.GetComponent<Animator>().SetInteger("Health", health);
         esc.animator.SetInteger("AnimationState", 3);
 
         //make enemy face player
@@ -50,12 +56,7 @@ public class EnemyAttack : EnemyState
 
     public override void CheckTransitions()
     {
-        if(health <= 0)
-        {
-            //die
-            //restore player move and turn speed
-            //remove combat grid
-        }
+
     }
 
     public override void Act()
@@ -65,19 +66,14 @@ public class EnemyAttack : EnemyState
         esc.gameObject.transform.LookAt(esc.player.transform);
         if (canAttack)
         {
-            Attack(3, 2);
+            Attack(3, 2.3f);
+        }
+
+        if(getHit)
+        {
+            GetHitByPlayer();
         }
         
-        //begin doing random attacks
-        //keep enemy health in track
-    }
-
-    public override void OnStateExit()
-    {
-        esc.move.SetActive(true);
-        esc.turn.SetActive(true);
-        esc.invis.SetActive(true);
-        esc.player.transform.position = lastPos;
     }
 
     public void Attack(int amount, float timeInBetween)
@@ -88,7 +84,8 @@ public class EnemyAttack : EnemyState
         {
             counter = 0;
             esc.animator.SetInteger("CombatState", 0);
-            GetHitByPlayer();
+            mopPos = esc.mop.transform.position;
+            getHit = true;
         }
         else
         {
@@ -128,7 +125,30 @@ public class EnemyAttack : EnemyState
 
     public void GetHitByPlayer()
     {
+        Vector3 currentMopPos = esc.mop.transform.position;
+        Vector3 movementDelta = currentMopPos - mopPos;
 
+        if(Mathf.Abs(movementDelta.x) > 1.5 || Mathf.Abs(movementDelta.y) > 1.5 || Mathf.Abs(movementDelta.z) > 1.5)
+        {
+            health -= 1;
+            esc.enemyHealth.GetComponent<Animator>().SetInteger("Health", health);
+            if(health <= 0)
+            {
+                esc.source.clip = esc.finalHit;
+                esc.source.Play();
+                esc.animator.SetInteger("CombatState", 6);
+                //play death effect
+                esc.StartCoroutine(GoBack());
+            }
+            else
+            {
+                esc.source.clip = esc.enemyHit;
+                esc.source.Play();
+                esc.animator.SetInteger("CombatState", 8);
+                getHit = false;
+                esc.StartCoroutine(BriefWait());
+            }
+        }
     }
 
     private IEnumerator WaitForNextAttack(int amount, float time)
@@ -139,7 +159,7 @@ public class EnemyAttack : EnemyState
 
     private IEnumerator WaitToSpawn(int spawn)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.1f);
         switch(spawn)
         {
             case 1:
@@ -165,6 +185,27 @@ public class EnemyAttack : EnemyState
     {
         yield return new WaitForSeconds(4);
         canAttack = true; 
+    }
+
+    private IEnumerator BriefWait()
+    {
+        yield return new WaitForSeconds(0.5f);
+        esc.animator.SetInteger("CombatState", 0);
+        yield return new WaitForSeconds(1f);
+        canAttack = true;
+    }
+
+    private IEnumerator GoBack()
+    {
+        yield return new WaitForSeconds(3f);
+        esc.combat = false;
+        esc.move.SetActive(true);
+        esc.turn.SetActive(true);
+        esc.invis.SetActive(true);
+        esc.combatGrid.GetComponent<Animator>().SetBool("found", false);
+        esc.player.transform.position = lastPos;
+        yield return new WaitForSeconds(0.5f);
+        esc.gameObject.SetActive(false);
     }
 
 

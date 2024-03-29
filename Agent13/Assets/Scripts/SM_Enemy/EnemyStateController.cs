@@ -9,6 +9,7 @@ public class EnemyStateController : MonoBehaviour
 {
     public Animator animator;
     public GameObject player;
+    public GameObject mop;
     public GameObject move;
     public GameObject turn;
     public GameObject combatGrid;
@@ -17,6 +18,7 @@ public class EnemyStateController : MonoBehaviour
     public GameObject cc;
     public GameObject playerTP;
     public GameObject enemyTP;
+    public GameObject enemyHealth;
     public GameObject invis;
     public EnemyState currentState;
     public NavMeshAgent m_Agent;
