@@ -23,7 +23,7 @@ public class Camera : MonoBehaviour
     }
     public void CastRay(Vector3 direction)
     {
-        Vector3 raycastOrigin = transform.position + transform.up * 0.2f;
+        Vector3 raycastOrigin = transform.position + transform.up * 0.1f;
         RaycastHit hit;
         if (Physics.Raycast(raycastOrigin, direction, out hit, raycastDistance, playerLayer))
         {

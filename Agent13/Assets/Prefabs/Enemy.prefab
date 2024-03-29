@@ -116,8 +116,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 3430239998044073315}
   player: {fileID: 0}
+  move: {fileID: 0}
+  turn: {fileID: 0}
   combatGrid: {fileID: 0}
+  leftSpawn: {fileID: 0}
+  topSpawn: {fileID: 0}
+  rightSpawn: {fileID: 0}
+  bottomSpawn: {fileID: 0}
+  leftWarning: {fileID: 0}
+  topWarning: {fileID: 0}
+  rightWarning: {fileID: 0}
+  bottomWarning: {fileID: 0}
   cc: {fileID: 0}
+  playerTP: {fileID: 0}
+  enemyTP: {fileID: 0}
   m_Agent: {fileID: 4038336407113863288}
   materials: []
   playerLayer:
@@ -125,16 +137,18 @@ MonoBehaviour:
     m_Bits: 8
   raycastDistance: 18
   found: 0
+  combat: 0
   source: {fileID: 4703749530684310598}
   footsteps: {fileID: 8300000, guid: 3f88084cdf3ebf3488c3cb7bb3bfe73e, type: 3}
   hey: {fileID: 8300000, guid: b5381769890bf7942ba2298e64a6079a, type: 3}
   running: {fileID: 8300000, guid: 2c6da21e8823d0e4f9655df48439203d, type: 3}
+  enemyHit: {fileID: 8300000, guid: a12e78eac6f544244bbe497818c15a28, type: 3}
+  finalHit: {fileID: 8300000, guid: 220e98354ebc1184f8fc288f287decb4, type: 3}
   movePositions:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  speed: 0
 --- !u!195 &4038336407113863288
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -145,7 +159,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.35
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

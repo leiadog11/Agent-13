@@ -11,7 +11,8 @@ public class EnemyFound : EnemyState
 
     public override void OnStateEnter()
     {
-        esc.speed += 15;
+        //esc.m_Agent.speed += 5;
+        //esc.m_Agent.acceleration += 2;
     }
 
     public override void CheckTransitions()
@@ -22,6 +23,11 @@ public class EnemyFound : EnemyState
         {
             esc.SetState(new EnemyAttack(esc));
         }
+
+        else if(esc.combat == true)
+        {
+            esc.SetState(new EnemyIdle(esc));
+        }
     }
 
     public override void Act()
@@ -29,5 +35,10 @@ public class EnemyFound : EnemyState
         esc.source.clip = esc.running;
         esc.source.Play();
         esc.m_Agent.destination = esc.player.transform.position;
+    }
+
+    public override void OnStateExit()
+    {
+        esc.m_Agent.destination = esc.transform.position;
     }
 }

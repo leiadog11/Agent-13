@@ -9,6 +9,7 @@ public class Invisible : MonoBehaviour
     public float inactivityThreshold = 1.5f; 
     private float timeSinceLastMovement = 0f;
     private Vector3 lastPosition;
+    public GameObject invis;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class Invisible : MonoBehaviour
 
         if (distanceMoved > 0.001f)
         {
+            invis.GetComponent<Animator>().SetBool("Hidden", false);
             invisible = false;
             timeSinceLastMovement = 0f;
         }
@@ -34,6 +36,7 @@ public class Invisible : MonoBehaviour
             timeSinceLastMovement += Time.deltaTime;
             if (timeSinceLastMovement >= inactivityThreshold)
             {
+                invis.GetComponent<Animator>().SetBool("Hidden", true);
                 invisible = true;
             }
         }

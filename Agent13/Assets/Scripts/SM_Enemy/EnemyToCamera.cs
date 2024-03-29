@@ -9,7 +9,8 @@ public class EnemyToCamera : EnemyState
     public override void OnStateEnter()
     {
         esc.animator.SetInteger("AnimationState", 4);
-        esc.speed += 15;
+        //esc.m_Agent.speed += 5;
+        //esc.m_Agent.acceleration += 2;
     }
 
     public override void Act()
@@ -22,9 +23,10 @@ public class EnemyToCamera : EnemyState
     public override void CheckTransitions()
     {
         float dist = Vector3.Distance(esc.transform.position, esc.cc.GetComponent<CameraController>().cameraPos.position);
-        if (dist < 5f)
+        if (dist < 8f)
         {
-            esc.speed -= 15;
+            esc.m_Agent.speed -= 10;
+            esc.m_Agent.acceleration -= 5;
             esc.SetState(new EnemyIdle(esc));
             esc.cc.GetComponent<CameraController>().alert = false;
         }

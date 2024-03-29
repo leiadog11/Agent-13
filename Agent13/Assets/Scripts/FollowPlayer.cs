@@ -6,16 +6,22 @@ using UnityEngine.UIElements;
 public class FollowPlayer : MonoBehaviour
 {
     public Transform playerTransform;
+    public float yOffset;
+    public float zOffset;
 
-    // Update is called once per frame
+    private void Start()
+    {
+        yOffset = 2.2f;
+        zOffset = 3.5f;
+    }
+
     void Update()
     {
         Vector3 newPosition = playerTransform.position;
 
-        // Add the Y offset
-        newPosition.y += 9;
+        newPosition.y += yOffset;
+        newPosition.z += zOffset;
 
-        // Set the object's position
         transform.position = newPosition;
     }
 }

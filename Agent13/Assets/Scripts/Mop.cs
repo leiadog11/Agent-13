@@ -5,6 +5,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Mop : MonoBehaviour
 {
+
+    public XRDirectInteractor interactor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +22,7 @@ public class Mop : MonoBehaviour
 
     public void ParentMop(SelectEnterEventArgs Hand)
     {
-        transform.SetParent(Hand.interactorObject.transform);
+        transform.SetParent(interactor.transform);
     }
 
     public void UnparentMop(SelectExitEventArgs Hand)

@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using System.Configuration;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class EnemyStateController : MonoBehaviour
 {
     public Animator animator;
     public GameObject player;
-    public GameObject playerMove;
-    public GameObject playerTurn;
+    public GameObject move;
+    public GameObject turn;
     public GameObject combatGrid;
-    public GameObject leftSpawn;
-    public GameObject topSpawn;
-    public GameObject rightSpawn;
-    public GameObject bottomSpawn;
+    public GameObject leftSpawn, topSpawn, rightSpawn, bottomSpawn;
+    public GameObject leftWarning, topWarning, rightWarning, bottomWarning;
     public GameObject cc;
+    public GameObject playerTP;
+    public GameObject enemyTP;
+    public GameObject invis;
     public EnemyState currentState;
     public NavMeshAgent m_Agent;
     public Material[] materials;
     public LayerMask playerLayer;
     public float raycastDistance = 15f;
     public bool found;
+    public bool combat;
     public AudioSource source;
     public AudioClip footsteps;
     public AudioClip hey;
@@ -29,13 +32,11 @@ public class EnemyStateController : MonoBehaviour
     public AudioClip enemyHit;
     public AudioClip finalHit;
     [SerializeField] private List<Transform> movePositions = new List<Transform>();
-    public float speed;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        speed = GetComponent<NavMeshAgent>().speed;
         m_Agent = GetComponent<NavMeshAgent>();
         SetState(new EnemyIdle(this));
     }
