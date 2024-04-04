@@ -23,6 +23,6 @@ public class CameraController : MonoBehaviour
 
     public void Pop()
     {
-        pop.Play();
+        //pop.Play();
     }
 }

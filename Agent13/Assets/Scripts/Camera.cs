@@ -8,18 +8,23 @@ public class Camera : MonoBehaviour
     public float raycastDistance = 5f;
     public AudioSource alarm;
     public GameObject cc;
+    private bool canCast = false;
     
 
     // Start is called before the first frame update
     void Start()
     {
-
+        canCast = false;
+        StartCoroutine(Cast());
     }
 
     // Update is called once per frame
     void Update()
     {
-        CastRay(Quaternion.AngleAxis(-180, transform.up) * transform.forward);
+        if(canCast)
+        {
+            CastRay(Quaternion.AngleAxis(-180, transform.up) * transform.forward);
+        }
     }
     public void CastRay(Vector3 direction)
     {
@@ -43,9 +48,15 @@ public class Camera : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Mop"))
         {
-            cc.GetComponent<CameraController>().Pop();
+            //cc.GetComponent<CameraController>().Pop();
             Destroy(gameObject);
         }
+    }
+
+    IEnumerator Cast()
+    {
+        yield return new WaitForSeconds(3);
+        canCast = true;
     }
 
 }

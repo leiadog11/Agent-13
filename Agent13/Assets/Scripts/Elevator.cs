@@ -35,9 +35,19 @@ public class Elevator : MonoBehaviour
 
     }
 
+    public void ElevatorOpen()
+    {
+        anim.Play("ElevatorOpen");
+    }
+
+    public void ElevatorClose()
+    {
+        anim.Play("ElevatorClose");
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

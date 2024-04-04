@@ -23,7 +23,6 @@ public class EnemyStateController : MonoBehaviour
     public GameObject invis;
     public EnemyState currentState;
     public NavMeshAgent m_Agent;
-    public Material[] materials;
     public LayerMask playerLayer;
     public float raycastDistance = 15f;
     public bool found;
