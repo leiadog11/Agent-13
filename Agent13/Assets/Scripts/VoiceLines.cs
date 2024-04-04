@@ -15,8 +15,8 @@ public class VoiceLines : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        invis.SetActive(false);
-        healthDisplay.SetActive(false);
+        //invis.SetActive(false);
+        //healthDisplay.SetActive(false);
     }
 
     // Update is called once per frame

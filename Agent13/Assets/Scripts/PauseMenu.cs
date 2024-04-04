@@ -20,6 +20,7 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         DisplayPauseMenu();
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame

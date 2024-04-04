@@ -8,27 +8,36 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ButtonVR : MonoBehaviour
 {
-    public Transform visualTarget;
-    public Vector3 localAxis;
-    private Vector3 offset;
-    private Vector3 initialLocalPos;
-    private Transform pokeAttachTransform;
-    private XRBaseInteractable interactable;
-    private bool isFollowing = false;
-    private bool freeze = false;
-    public float resetSpeed = 5;
+    //public Transform visualTarget;
+    //public Vector3 localAxis;
+    //private Vector3 offset;
+    //private Vector3 initialLocalPos;
+    //private Transform pokeAttachTransform;
+    //private XRBaseInteractable interactable;
+    //private bool isFollowing = false;
+    //private bool freeze = false;
+    //public float resetSpeed = 5;
+    public int level;
+    public GameObject elevator;
+    private AudioSource source;
     //public float followAngleThreshold = 45;
 
     // Start is called before the first frame update
     void Start()
     {
+        level = 1;
+        source = GetComponent<AudioSource>();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        /*
         initialLocalPos = new Vector3(-0.029f, -0.6f, -0.872f);
         interactable = GetComponent<XRBaseInteractable>();
         interactable.hoverEntered.AddListener(Follow);
         interactable.hoverExited.AddListener(Reset);
         interactable.selectEntered.AddListener(Freeze);
+        */
     }
 
+    /*
     public void Follow(BaseInteractionEventArgs hover)
     {
         if(hover.interactorObject is XRPokeInteractor)
@@ -63,9 +72,36 @@ public class ButtonVR : MonoBehaviour
             NextLevel();
         }
     }
+    */
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Check the index of the loaded scene
+        if (scene.buildIndex == 1)
+        {
+            // Set the integer value to 1
+            level = 1;
+        }
+        else if (scene.buildIndex == 2)
+        {
+            // Set the integer value to 2
+            level = 2;
+        }
+        else if (scene.buildIndex == 3)
+        {
+            // Set the integer value to 3
+            level = 3;
+        }
+    }
+
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
     private void Update()
     {
+        /*
         if (freeze)
         {
             return;
@@ -81,12 +117,33 @@ public class ButtonVR : MonoBehaviour
         {
             visualTarget.localPosition = Vector3.Lerp(visualTarget.localPosition, initialLocalPos, Time.deltaTime * resetSpeed);
         }
+        */
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the colliding object has the tag "LeftHand"
+        if (other.CompareTag("LeftHand"))
+        {
+            // Call the NextLevel function
+            NextLevel();
+            gameObject.GetComponent<BoxCollider>().enabled = false; 
+        }
     }
 
 
     public void NextLevel()
     {
-        SceneManager.LoadScene("Level2");
+        source.Play();
+        level += 1;
+        elevator.GetComponent<Animator>().Play("ElevatorClose");
+        StartCoroutine(LoadNextLevel());
+    }
+
+    private IEnumerator LoadNextLevel()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("Level" + level);
     }
 
 }

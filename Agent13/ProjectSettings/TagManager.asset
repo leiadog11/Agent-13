@@ -10,6 +10,7 @@ TagManager:
   - Mop
   - Block
   - HitBox
+  - LeftHand
   layers:
   - Default
   - TransparentFX

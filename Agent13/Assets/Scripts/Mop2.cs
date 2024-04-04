@@ -10,6 +10,11 @@ public class Mop2 : XRGrabInteractable
     private bool isGrabbed = false;
     private Vector3 grabOffset;
 
+    void Start()
+    {
+        // Make sure this object persists across scene changes
+        DontDestroyOnLoad(gameObject);
+    }
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {

@@ -56,7 +56,11 @@ public class EnemyAttack : EnemyState
 
     public override void CheckTransitions()
     {
-
+        if(esc.playerHealth.GetComponent<PlayerHealth>().lose == true)
+        {
+            canAttack = false;
+            esc.animator.SetInteger("CombatState", 7);
+        }
     }
 
     public override void Act()
@@ -135,7 +139,7 @@ public class EnemyAttack : EnemyState
             if(health <= 0)
             {
                 esc.source.clip = esc.finalHit;
-                esc.source.Play();
+                esc.source.PlayOneShot(esc.finalHit);
                 esc.animator.SetInteger("CombatState", 6);
                 //play death effect
                 esc.StartCoroutine(GoBack());
@@ -143,7 +147,7 @@ public class EnemyAttack : EnemyState
             else
             {
                 esc.source.clip = esc.enemyHit;
-                esc.source.Play();
+                esc.source.PlayOneShot(esc.enemyHit);
                 esc.animator.SetInteger("CombatState", 8);
                 getHit = false;
                 esc.StartCoroutine(BriefWait());
@@ -197,6 +201,7 @@ public class EnemyAttack : EnemyState
 
     private IEnumerator GoBack()
     {
+        canAttack = false;
         yield return new WaitForSeconds(3f);
         esc.combat = false;
         esc.move.SetActive(true);

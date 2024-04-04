@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Processors;
 public class CombatAttacks : MonoBehaviour
 {
     public GameObject prefabToSpawn;
-    public GameObject player;
+    public GameObject health;
     public int way;
     private bool dead;
     public AudioSource source;
@@ -15,7 +15,7 @@ public class CombatAttacks : MonoBehaviour
 
     private void Start()
     {
-
+        dead = false;
     }
 
     // Update is called once per frame
@@ -62,14 +62,14 @@ public class CombatAttacks : MonoBehaviour
         if (ob.GetComponent<Attacks>().result == 2)
         {
             source.clip = block;
-            source.Play();
+            source.PlayOneShot(block);
             dead = true;
         }
         else if (ob.GetComponent<Attacks>().result == 1)
         {
             source.clip = hit;
-            source.Play();
-            //player.health - 5
+            source.PlayOneShot(hit);
+            health.GetComponent<PlayerHealth>().LoseHealth();
             dead = true;
         }
     }

@@ -9,6 +9,7 @@ public class EnemyStateController : MonoBehaviour
 {
     public Animator animator;
     public GameObject player;
+    public GameObject playerHealth;
     public GameObject mop;
     public GameObject move;
     public GameObject turn;
