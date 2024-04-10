@@ -18,16 +18,21 @@ public class ButtonVR : MonoBehaviour
     //private bool freeze = false;
     //public float resetSpeed = 5;
     public int level;
-    public GameObject elevator;
+    public GameObject elevator, cc;
     private AudioSource source;
     //public float followAngleThreshold = 45;
+
+    public GameObject gameManager;
+
+    private void Awake()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        level = 1;
         source = GetComponent<AudioSource>();
-        SceneManager.sceneLoaded += OnSceneLoaded;
         /*
         initialLocalPos = new Vector3(-0.029f, -0.6f, -0.872f);
         interactable = GetComponent<XRBaseInteractable>();
@@ -74,31 +79,6 @@ public class ButtonVR : MonoBehaviour
     }
     */
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        // Check the index of the loaded scene
-        if (scene.buildIndex == 1)
-        {
-            // Set the integer value to 1
-            level = 1;
-        }
-        else if (scene.buildIndex == 2)
-        {
-            // Set the integer value to 2
-            level = 2;
-        }
-        else if (scene.buildIndex == 3)
-        {
-            // Set the integer value to 3
-            level = 3;
-        }
-    }
-
-    void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
     private void Update()
     {
         /*
@@ -134,8 +114,9 @@ public class ButtonVR : MonoBehaviour
 
     public void NextLevel()
     {
+        cc.SetActive(false);
         source.Play();
-        level += 1;
+        gameManager.GetComponent<GameManager>().level += 1;
         elevator.GetComponent<Animator>().Play("ElevatorClose");
         StartCoroutine(LoadNextLevel());
     }
@@ -143,7 +124,7 @@ public class ButtonVR : MonoBehaviour
     private IEnumerator LoadNextLevel()
     {
         yield return new WaitForSeconds(2);
-        SceneManager.LoadScene("Level" + level);
+        SceneManager.LoadScene("Level" + gameManager.GetComponent<GameManager>().level);
     }
 
 }

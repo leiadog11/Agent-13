@@ -13,6 +13,14 @@ public class CombatAttacks : MonoBehaviour
     public AudioClip block;
     public AudioClip hit;
 
+    public GameObject gameManager;
+
+    public void Awake()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        health = gameManager.GetComponent<GameManager>().playerHealth;
+    }
+
     private void Start()
     {
         dead = false;

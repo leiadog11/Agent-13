@@ -9,7 +9,10 @@ public class Camera : MonoBehaviour
     public AudioSource alarm;
     public GameObject cc;
     private bool canCast = false;
-    
+    public GameObject effect;
+    public AudioSource source;
+    public GameObject voiceLines;
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +37,11 @@ public class Camera : MonoBehaviour
         {
             if (hit.collider.CompareTag("Player"))
             {
+                if(!cc.GetComponent<CameraController>().spotted)
+                {
+                    voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(12);
+                    cc.GetComponent<CameraController>().spotted = true;
+                }
                 alarm.Play();
                 cc.GetComponent<CameraController>().alert = true;
                 cc.GetComponent<CameraController>().cameraPos = transform;
@@ -48,6 +56,14 @@ public class Camera : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Mop"))
         {
+            if(!cc.GetComponent<CameraController>().erased)
+            {
+                voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(13);
+                cc.GetComponent<CameraController>().erased = true;
+            }
+            effect.transform.position = gameObject.transform.position;
+            source.Play();
+            effect.GetComponent<ParticleSystem>().Play();
             //cc.GetComponent<CameraController>().Pop();
             Destroy(gameObject);
         }

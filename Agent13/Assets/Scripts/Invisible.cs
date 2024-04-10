@@ -6,7 +6,7 @@ using UnityEngine.XR;
 public class Invisible : MonoBehaviour
 {
     public bool invisible = false;
-    public float inactivityThreshold = 1.5f; 
+    public float inactivityThreshold = 1f; 
     private float timeSinceLastMovement = 0f;
     private Vector3 lastPosition;
     public GameObject invis;
@@ -25,7 +25,7 @@ public class Invisible : MonoBehaviour
 
         float distanceMoved = Vector3.Distance(lastPosition, currentPosition);
 
-        if (distanceMoved > 0.001f)
+        if (distanceMoved > 0.05f)
         {
             invis.GetComponent<Animator>().SetBool("Hidden", false);
             invisible = false;

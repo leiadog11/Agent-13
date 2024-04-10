@@ -9,11 +9,13 @@ public class Mop2 : XRGrabInteractable
     private Rigidbody mopRigidbody;
     private bool isGrabbed = false;
     private Vector3 grabOffset;
+    public GameObject voiceLines;
+    private AudioSource source;
 
     void Start()
     {
-        // Make sure this object persists across scene changes
         DontDestroyOnLoad(gameObject);
+        source = GetComponent<AudioSource>();
     }
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
@@ -29,6 +31,8 @@ public class Mop2 : XRGrabInteractable
 
     private void AttachMopToHand(XRBaseInteractor interactor)
     {
+        source.Play();
+        voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(7);
         this.interactor = interactor;
         isGrabbed = true;
         if (interactor is XRDirectInteractor directInteractor)

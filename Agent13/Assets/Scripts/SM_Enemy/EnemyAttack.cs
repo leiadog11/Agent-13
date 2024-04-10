@@ -29,11 +29,17 @@ public class EnemyAttack : EnemyState
         esc.turn.SetActive(false);
         esc.invis.SetActive(false);
 
-        //bools
-        //if tutorial has been completed:
-        esc.StartCoroutine(StartUp());
 
-        //else: tutorial
+        if(!esc.beenAttacked)
+        {
+            esc.voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(15);
+            esc.StartCoroutine(StartUp(12));
+            esc.beenAttacked = true;
+        }
+        else
+        {
+            esc.StartCoroutine(StartUp(4));
+        }
 
         esc.combat = true;
         getHit = false;
@@ -185,9 +191,9 @@ public class EnemyAttack : EnemyState
         }
     }
 
-    private IEnumerator StartUp()
+    private IEnumerator StartUp(float seconds)
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(seconds);
         canAttack = true; 
     }
 
@@ -210,6 +216,7 @@ public class EnemyAttack : EnemyState
         esc.combatGrid.GetComponent<Animator>().SetBool("found", false);
         esc.player.transform.position = lastPos;
         yield return new WaitForSeconds(0.5f);
+        esc.voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(16);
         esc.gameObject.SetActive(false);
     }
 

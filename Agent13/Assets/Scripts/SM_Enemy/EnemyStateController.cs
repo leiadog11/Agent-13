@@ -26,7 +26,7 @@ public class EnemyStateController : MonoBehaviour
     public LayerMask playerLayer;
     public float raycastDistance = 15f;
     public bool found;
-    public bool combat;
+    public bool combat, beenAttacked;
     public AudioSource source;
     public AudioClip footsteps;
     public AudioClip hey;
@@ -35,10 +35,25 @@ public class EnemyStateController : MonoBehaviour
     public AudioClip finalHit;
     [SerializeField] private List<Transform> movePositions = new List<Transform>();
 
+    public GameObject gameManager;
+    public GameObject voiceLines;
+
+    private void Awake()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        voiceLines = GameObject.FindGameObjectWithTag("VoiceLines");
+        player = gameManager.GetComponent<GameManager>().player;
+        playerHealth = gameManager.GetComponent<GameManager>().playerHealth;
+        mop = gameManager.GetComponent<GameManager>().mop;
+        turn = gameManager.GetComponent<GameManager>().turn;
+        move = gameManager.GetComponent<GameManager>().move;
+        invis = gameManager.GetComponent<GameManager>().invis;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        beenAttacked = false;
         m_Agent = GetComponent<NavMeshAgent>();
         SetState(new EnemyIdle(this));
     }
@@ -79,6 +94,7 @@ public class EnemyStateController : MonoBehaviour
     {
         Vector3 raycastOrigin = transform.position + transform.up * 1.5f;
         RaycastHit hit;
+        LayerMask layerMask = ~LayerMask.GetMask("Wall");
         if (Physics.Raycast(raycastOrigin, direction, out hit, raycastDistance, playerLayer))
         {
             if (hit.collider.CompareTag("Player"))

@@ -11,6 +11,14 @@ public class CombatMopUI : MonoBehaviour
     private bool rotatedLeft = false;
     private bool rotatedRight = false;
 
+    public GameObject gameManager;
+
+    public void Awake()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        targetObject = gameManager.GetComponent<GameManager>().mop.transform;
+    }
+
     private void Start()
     {
         yOffset = 0;

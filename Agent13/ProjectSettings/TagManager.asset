@@ -11,6 +11,11 @@ TagManager:
   - Block
   - HitBox
   - LeftHand
+  - GameManager
+  - StopArea1
+  - StopArea2
+  - VoiceLines
+  - StopArea3
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
+    public GameObject player;
     public GameObject pauseMenu;
     public GameObject resumeButton;
     public GameObject optionsButton;
@@ -112,6 +113,8 @@ public class PauseMenu : MonoBehaviour
 
     public void MainMenu()
     {
+        Destroy(player);
+        //Destroy(gameObject);
         SceneManager.LoadScene("Menu");
     }
 

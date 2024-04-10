@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public GameObject amt;
+    public TextMeshProUGUI amt;
     public int health;
     public bool lose;
-
+    public GameObject player;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        amt.GetComponent<TextMeshPro>().text = health.ToString();
+        amt.GetComponent<TextMeshProUGUI>().text = health.ToString();
     }
 
     public void LoseHealth()
@@ -38,6 +38,7 @@ public class PlayerHealth : MonoBehaviour
     IEnumerator Lose()
     {
         yield return new WaitForSeconds(2);
+        Destroy(player);
         SceneManager.LoadScene("Menu");
     }
 }

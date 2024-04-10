@@ -116,6 +116,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 3430239998044073315}
   player: {fileID: 0}
+  playerHealth: {fileID: 0}
+  mop: {fileID: 0}
   move: {fileID: 0}
   turn: {fileID: 0}
   combatGrid: {fileID: 0}
@@ -130,8 +132,9 @@ MonoBehaviour:
   cc: {fileID: 0}
   playerTP: {fileID: 0}
   enemyTP: {fileID: 0}
+  enemyHealth: {fileID: 0}
+  invis: {fileID: 0}
   m_Agent: {fileID: 4038336407113863288}
-  materials: []
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
