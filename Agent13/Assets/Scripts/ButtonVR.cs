@@ -17,7 +17,6 @@ public class ButtonVR : MonoBehaviour
     //private bool isFollowing = false;
     //private bool freeze = false;
     //public float resetSpeed = 5;
-    public int level;
     public GameObject elevator, cc;
     private AudioSource source;
     //public float followAngleThreshold = 45;
@@ -124,7 +123,20 @@ public class ButtonVR : MonoBehaviour
     private IEnumerator LoadNextLevel()
     {
         yield return new WaitForSeconds(2);
-        SceneManager.LoadScene("Level" + gameManager.GetComponent<GameManager>().level);
+
+        if(gameManager.GetComponent<GameManager>().level == 2)
+        {
+            SceneManager.LoadScene("Level2");
+        }
+        else if (gameManager.GetComponent<GameManager>().level == 3)
+        {
+            SceneManager.LoadScene("Level3");
+        }
+        else if (gameManager.GetComponent<GameManager>().level == 4)
+        {
+            SceneManager.LoadScene("FinalLevel");
+        }
+
     }
 
 }

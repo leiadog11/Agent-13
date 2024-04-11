@@ -26,7 +26,7 @@ public class EnemyStateController : MonoBehaviour
     public LayerMask playerLayer;
     public float raycastDistance = 15f;
     public bool found;
-    public bool combat, beenAttacked;
+    public bool combat;
     public AudioSource source;
     public AudioClip footsteps;
     public AudioClip hey;
@@ -44,6 +44,7 @@ public class EnemyStateController : MonoBehaviour
         voiceLines = GameObject.FindGameObjectWithTag("VoiceLines");
         player = gameManager.GetComponent<GameManager>().player;
         playerHealth = gameManager.GetComponent<GameManager>().playerHealth;
+        voiceLines = gameManager.GetComponent<GameManager>().voiceLines;
         mop = gameManager.GetComponent<GameManager>().mop;
         turn = gameManager.GetComponent<GameManager>().turn;
         move = gameManager.GetComponent<GameManager>().move;
@@ -53,7 +54,6 @@ public class EnemyStateController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        beenAttacked = false;
         m_Agent = GetComponent<NavMeshAgent>();
         SetState(new EnemyIdle(this));
     }

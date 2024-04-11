@@ -35,7 +35,7 @@ public class Gun : MonoBehaviour
 
         // Reset position and rotation of the item relative to the controller
         gameObject.transform.localPosition = Vector3.zero + offset;
-        //gameObject.transform.localRotation = Quaternion.identity;
+        gameObject.transform.localRotation = Quaternion.identity;
         can = true;
     }
 

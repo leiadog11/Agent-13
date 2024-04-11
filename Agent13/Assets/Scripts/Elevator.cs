@@ -8,27 +8,38 @@ public class Elevator : MonoBehaviour
     public GameObject button;
     public bool isStart;
 
+    public GameObject gameManager;
+
+    private void Awake()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
 
-        if (button.GetComponent<ButtonVR>().level == 1)
+        if (gameManager.GetComponent<GameManager>().level == 1)
         {
             //play elevator ding
             anim.Play("ElevatorOpen");
         }
 
-        if (button.GetComponent<ButtonVR>().level == 2 && isStart)
+        if (gameManager.GetComponent<GameManager>().level == 2 && isStart)
         {
             anim.Play("ElevatorOpen");
         }
-        else if (button.GetComponent<ButtonVR>().level == 2)
+        else if (gameManager.GetComponent<GameManager>().level == 2)
         {
             anim.Play("ElevatorClose");
         }
 
-        if (button.GetComponent<ButtonVR>().level == 3)
+        if (gameManager.GetComponent<GameManager>().level == 3 && isStart)
+        {
+            anim.Play("ElevatorOpen");
+        }
+        else if (gameManager.GetComponent<GameManager>().level == 3)
         {
             anim.Play("ElevatorClose");
         }

@@ -35,6 +35,7 @@ public class EnemyNavigation : EnemyState
 
         }
 
+        /*
         float dist2 = Vector3.Distance(esc.transform.position, esc.player.transform.position);
         if (dist2 < 10f && esc.player.GetComponent<Invisible>().invisible == false)
         {
@@ -44,6 +45,7 @@ public class EnemyNavigation : EnemyState
             esc.animator.SetInteger("AnimationState", 2);
             esc.StartCoroutine(WaitForPoint());
         }
+        */
 
         if (esc.cc.GetComponent<CameraController>().alert == true)
         {

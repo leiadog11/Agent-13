@@ -30,15 +30,20 @@ public class EnemyAttack : EnemyState
         esc.invis.SetActive(false);
 
 
-        if(!esc.beenAttacked)
+        if(esc.gameManager.GetComponent<GameManager>().attacked == 0)
         {
             esc.voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(15);
             esc.StartCoroutine(StartUp(12));
-            esc.beenAttacked = true;
+        }
+        else if (esc.gameManager.GetComponent<GameManager>().attacked == 1)
+        {
+            esc.voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(21);
+            esc.StartCoroutine(StartUp(4));
         }
         else
         {
             esc.StartCoroutine(StartUp(4));
+            esc.gameManager.GetComponent<GameManager>().attacked++;
         }
 
         esc.combat = true;
@@ -216,7 +221,17 @@ public class EnemyAttack : EnemyState
         esc.combatGrid.GetComponent<Animator>().SetBool("found", false);
         esc.player.transform.position = lastPos;
         yield return new WaitForSeconds(0.5f);
-        esc.voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(16);
+        if(esc.gameManager.GetComponent<GameManager>().attacked == 0)
+        {
+            esc.voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(16);
+            esc.gameManager.GetComponent<GameManager>().attacked = 1;
+        }
+        else if (esc.gameManager.GetComponent<GameManager>().attacked == 1)
+        {
+            esc.voiceLines.GetComponent<VoiceLines>().PlaySpecificLine(22);
+            esc.gameManager.GetComponent<GameManager>().attacked = 2;
+
+        }
         esc.gameObject.SetActive(false);
     }
 

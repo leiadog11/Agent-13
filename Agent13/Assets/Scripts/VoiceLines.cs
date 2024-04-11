@@ -19,8 +19,20 @@ public class VoiceLines : MonoBehaviour
     private AudioSource source;
     private int line;
 
-    public AudioClip line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16, line17, line18;
+    public AudioClip line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12, line13, line14, line15, line16, line17, line18, line19, line20, line21, line22;
     public AudioClip vent, fall;
+    public GameObject gameManager;
+
+    private void Awake()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        player = gameManager.GetComponent<GameManager>().player;
+        healthDisplay = gameManager.GetComponent<GameManager>().playerHealth;
+        keycardDisplay = gameManager.GetComponent<GameManager>().keycardDisplay;
+        turn = gameManager.GetComponent<GameManager>().turn;
+        move = gameManager.GetComponent<GameManager>().move;
+        invis = gameManager.GetComponent<GameManager>().invis;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +42,7 @@ public class VoiceLines : MonoBehaviour
         source = gameObject.GetComponent<AudioSource>();
         invis.SetActive(false);
         healthDisplay.SetActive(false);
+        keycardDisplay.SetActive(false);
         move.SetActive(false);
         turn.SetActive(false);
         StartCoroutine(WaitForLine(2));
@@ -92,6 +105,7 @@ public class VoiceLines : MonoBehaviour
                 move.SetActive(false);
                 turn.SetActive(false);
                 source.clip = line9;
+                DestroyAreaZero();
                 source.Play();
                 line++;
                 StartCoroutine(WaitForLine(12.2f));
@@ -193,18 +207,26 @@ public class VoiceLines : MonoBehaviour
                 StartCoroutine(WaitForLine(6.1f));
                 break;
             case 18:
-                foreach (GameObject enemy in enemies)
-                {
-                    enemy.GetComponent<EnemyStateController>().SetState(new EnemyIdle(enemy.GetComponent<EnemyStateController>()));
-                    enemy.GetComponent<NavMeshAgent>().speed = 0;
-                    enemy.GetComponent<NavMeshAgent>().acceleration = 0;
-                }
-                move.SetActive(false);
-                turn.SetActive(false);
                 source.clip = line18;
                 source.Play();
-                StartCoroutine(Reactivate(4.1f));
                 DestroyAreaThree();
+                break;
+            case 19:
+                keycardDisplay.SetActive(true);
+                move.SetActive(false);
+                turn.SetActive(false);
+                source.clip = line19;
+                source.Play();
+                StartCoroutine(Reactivate2(12.1f));
+                DestroyAreaFour();
+                break;
+            case 20:
+                source.clip = line20;
+                source.Play();
+                break;
+            case 21:
+                source.clip = line21;
+                source.Play();
                 break;
 
         }
@@ -221,6 +243,24 @@ public class VoiceLines : MonoBehaviour
         source.Stop();
         move.SetActive(true);
         turn.SetActive(true);
+    }
+
+    public IEnumerator Reactivate2(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        source.Stop();
+        move.SetActive(true);
+        turn.SetActive(true);
+    }
+
+    private void DestroyAreaZero()
+    {
+        GameObject[] areaZero = GameObject.FindGameObjectsWithTag("StopArea0");
+
+        foreach (GameObject area in areaZero)
+        {
+            Destroy(area);
+        }
     }
 
     private void DestroyAreaOne()
@@ -248,6 +288,16 @@ public class VoiceLines : MonoBehaviour
         GameObject[] areaThree = GameObject.FindGameObjectsWithTag("StopArea3");
 
         foreach (GameObject area in areaThree)
+        {
+            Destroy(area);
+        }
+    }
+
+    private void DestroyAreaFour()
+    {
+        GameObject[] areaFour = GameObject.FindGameObjectsWithTag("StopArea4");
+
+        foreach (GameObject area in areaFour)
         {
             Destroy(area);
         }

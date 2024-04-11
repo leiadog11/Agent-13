@@ -8,7 +8,7 @@ public class MarkerWall : MonoBehaviour
     public GameObject voiceLines;
     public GameObject effect;
     public GameObject gameManager;
-    public int place = 0;
+    //public int place = 0;
 
     private void Awake()
     {
@@ -25,6 +25,7 @@ public class MarkerWall : MonoBehaviour
 
     IEnumerator DoStuff()
     {
+        /*
         if(gameManager.GetComponent<GameManager>().level == 1)
         {
             if (place == 1)
@@ -40,6 +41,8 @@ public class MarkerWall : MonoBehaviour
                 effect.transform.position = new Vector3(-72.9f, 97.8f, 0.35f);
             }
         }
+        */
+        effect.transform.position = gameObject.transform.position;
         source.Play();
         //voiceLines.GetComponent<VoiceLines>().Lines();
         effect.GetComponent<ParticleSystem>().Play();

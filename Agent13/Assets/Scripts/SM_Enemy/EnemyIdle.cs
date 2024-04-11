@@ -32,6 +32,7 @@ public class EnemyIdle : EnemyState
             esc.SetState(new EnemyFound(esc));
         }
 
+        /*
         float dist2 = Vector3.Distance(esc.transform.position, esc.player.transform.position);
         if (dist2 < 10f && esc.player.GetComponent<Invisible>().invisible == false)
         {
@@ -42,6 +43,7 @@ public class EnemyIdle : EnemyState
             esc.StartCoroutine(WaitForPoint());
             esc.SetState(new EnemyFound(esc));
         }
+        */
     }
 
     public override void Act()

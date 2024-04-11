@@ -16,6 +16,9 @@ TagManager:
   - StopArea2
   - VoiceLines
   - StopArea3
+  - StopArea4
+  - StopArea0
+  - Enemy
   layers:
   - Default
   - TransparentFX

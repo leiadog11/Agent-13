@@ -7,8 +7,9 @@ public class CombatAttacks : MonoBehaviour
 {
     public GameObject prefabToSpawn;
     public GameObject health;
+    public GameObject mop;
+    public GameObject hitbox;
     public int way;
-    private bool dead;
     public AudioSource source;
     public AudioClip block;
     public AudioClip hit;
@@ -18,12 +19,13 @@ public class CombatAttacks : MonoBehaviour
     public void Awake()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        mop = gameManager.GetComponent<GameManager>().mop;
         health = gameManager.GetComponent<GameManager>().playerHealth;
     }
 
     private void Start()
     {
-        dead = false;
+        
     }
 
     // Update is called once per frame
@@ -34,7 +36,6 @@ public class CombatAttacks : MonoBehaviour
 
     public void Spawn()
     {
-        dead = false;
         GameObject spawnedObject = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
         spawnedObject.GetComponent<Attacks>().theWay = way;
 
@@ -71,14 +72,14 @@ public class CombatAttacks : MonoBehaviour
         {
             source.clip = block;
             source.PlayOneShot(block);
-            dead = true;
+            mop.GetComponent<ParticleSystem>().Play();
         }
         else if (ob.GetComponent<Attacks>().result == 1)
         {
             source.clip = hit;
             source.PlayOneShot(hit);
+            hitbox.GetComponent<ParticleSystem>().Play();
             health.GetComponent<PlayerHealth>().LoseHealth();
-            dead = true;
         }
     }
 }

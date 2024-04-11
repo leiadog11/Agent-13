@@ -10,6 +10,14 @@ public class PlayerHealth : MonoBehaviour
     public int health;
     public bool lose;
     public GameObject player;
+    public GameObject mop;
+    public GameObject gameManager;
+    public GameObject gameOver;
+
+    private void Awake()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -26,19 +34,25 @@ public class PlayerHealth : MonoBehaviour
 
     public void LoseHealth()
     {
-        health -= 5;
-
-        if(health <= 0)
+        if(gameManager.GetComponent<GameManager>().attacked >= 1)
         {
-            lose = true;
-            StartCoroutine(Lose());   
+            health -= 5;
+
+            if (health <= 0)
+            {
+                lose = true;
+                StartCoroutine(Lose());
+            }
         }
     }
 
     IEnumerator Lose()
     {
-        yield return new WaitForSeconds(2);
+        gameOver.SetActive(true);
+        yield return new WaitForSeconds(2.2f);
         Destroy(player);
+        Destroy(mop);
+        Destroy(gameManager);
         SceneManager.LoadScene("Menu");
     }
 }
