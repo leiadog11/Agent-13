@@ -24,11 +24,6 @@ public class Mop2 : XRGrabInteractable
         AttachMopToHand(interactor);
     }
 
-    protected override void OnSelectExiting(SelectExitEventArgs args)
-    {
-        return;
-    }
-
     private void AttachMopToHand(XRBaseInteractor interactor)
     {
         source.Play();
@@ -50,20 +45,6 @@ public class Mop2 : XRGrabInteractable
         // Parent the mop to the hand
         transform.SetParent(interactor.transform);
 
-    }
-
-    private void DetachMopFromHand()
-    {
-        if (interactor is XRDirectInteractor directInteractor)
-        {
-            // Re-enable direct interactor
-            directInteractor.enabled = true;
-        }
-
-        // Unparent the mop from the hand
-        transform.SetParent(null);
-        isGrabbed = false;
-        mopRigidbody.isKinematic = false; // Allow physics interactions again
     }
 
     private void Update()

@@ -22,6 +22,8 @@ public class EnemyAttack : EnemyState
 
     public override void OnStateEnter()
     {
+        esc.music.GetComponent<AudioSource>().Stop();
+        esc.battleMusic.GetComponent<AudioSource>().Play();
         counter = 0;
 
         //set player move speed and turn speed to 0
@@ -149,16 +151,18 @@ public class EnemyAttack : EnemyState
             esc.enemyHealth.GetComponent<Animator>().SetInteger("Health", health);
             if(health <= 0)
             {
-                esc.source.clip = esc.finalHit;
-                esc.source.PlayOneShot(esc.finalHit);
+                if(!esc.source.isPlaying)
+                {
+                    esc.source.clip = esc.finalHit;
+                    esc.source.Play();
+                }
                 esc.animator.SetInteger("CombatState", 6);
-                //play death effect
                 esc.StartCoroutine(GoBack());
             }
             else
             {
                 esc.source.clip = esc.enemyHit;
-                esc.source.PlayOneShot(esc.enemyHit);
+                esc.source.Play();
                 esc.animator.SetInteger("CombatState", 8);
                 getHit = false;
                 esc.StartCoroutine(BriefWait());
@@ -214,12 +218,15 @@ public class EnemyAttack : EnemyState
     {
         canAttack = false;
         yield return new WaitForSeconds(3f);
+        esc.source.Stop();
         esc.combat = false;
         esc.move.SetActive(true);
         esc.turn.SetActive(true);
         esc.invis.SetActive(true);
         esc.combatGrid.GetComponent<Animator>().SetBool("found", false);
         esc.player.transform.position = lastPos;
+        esc.music.GetComponent<AudioSource>().Play();
+        esc.battleMusic.GetComponent<AudioSource>().Stop();
         yield return new WaitForSeconds(0.5f);
         if(esc.gameManager.GetComponent<GameManager>().attacked == 0)
         {
@@ -232,7 +239,8 @@ public class EnemyAttack : EnemyState
             esc.gameManager.GetComponent<GameManager>().attacked = 2;
 
         }
-        esc.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        Object.Destroy(esc.gameObject);
     }
 
 

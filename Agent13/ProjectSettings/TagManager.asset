@@ -19,6 +19,7 @@ TagManager:
   - StopArea4
   - StopArea0
   - Enemy
+  - Music
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -23,8 +24,8 @@ public class EnemyStateController : MonoBehaviour
     public GameObject invis;
     public EnemyState currentState;
     public NavMeshAgent m_Agent;
-    public LayerMask playerLayer;
-    public float raycastDistance = 15f;
+    //public LayerMask playerLayer;
+    //public float raycastDistance = 15f;
     public bool found;
     public bool combat;
     public AudioSource source;
@@ -33,7 +34,9 @@ public class EnemyStateController : MonoBehaviour
     public AudioClip running;
     public AudioClip enemyHit;
     public AudioClip finalHit;
+    public GameObject music, battleMusic;
     [SerializeField] private List<Transform> movePositions = new List<Transform>();
+    public Vector3 lastPosition;
 
     public GameObject gameManager;
     public GameObject voiceLines;
@@ -90,6 +93,7 @@ public class EnemyStateController : MonoBehaviour
         return null;
     }
 
+    /**
     public void CastRay(Vector3 direction)
     {
         Vector3 raycastOrigin = transform.position + transform.up * 1.5f;
@@ -106,5 +110,26 @@ public class EnemyStateController : MonoBehaviour
         // Debug drawing of rays in the scene view
         Debug.DrawRay(raycastOrigin, direction * raycastDistance, Color.red);
     }
+    **/
 
+    private float raycastDistance = 10f;
+    public LayerMask obstacleMask = ~LayerMask.GetMask("Wall");
+    private float raycastHeightOffset = 3.5f;
+    private float raycastAngle = 10f;
+
+    public void DetectPlayer()
+    {
+        Vector3 raycastOrigin = transform.position + transform.up * 1.5f;
+        RaycastHit hit;
+        if (Physics.Raycast(raycastOrigin, transform.forward, out hit, raycastDistance, ~obstacleMask))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                found = true;
+            }
+        }
+
+        // Draw the raycast line in the Scene view
+        Debug.DrawRay(raycastOrigin, transform.forward * raycastDistance, Color.red);
+    }
 }

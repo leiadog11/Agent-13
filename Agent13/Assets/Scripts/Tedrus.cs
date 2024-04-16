@@ -29,6 +29,14 @@ public class Tedrus : XRGrabInteractable
 
         }
     }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            gameManager.GetComponent<GameManager>().tedrus = true;
+            StartCoroutine(Collect());
+        }
+    }
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {

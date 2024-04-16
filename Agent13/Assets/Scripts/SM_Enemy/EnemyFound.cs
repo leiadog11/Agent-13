@@ -24,7 +24,7 @@ public class EnemyFound : EnemyState
             esc.SetState(new EnemyAttack(esc));
         }
 
-        else if(esc.combat == true)
+        if(esc.combat == true)
         {
             esc.SetState(new EnemyIdle(esc));
         }
@@ -32,8 +32,16 @@ public class EnemyFound : EnemyState
 
     public override void Act()
     {
-        esc.source.clip = esc.running;
-        esc.source.Play();
+        // If the character has moved and the audio is not currently playing
+        if (esc.transform.position != esc.lastPosition && !esc.source.isPlaying)
+        {
+            esc.source.pitch = Random.Range(0.9f, 1.2f);
+            esc.source.volume = Random.Range(0.4f, 1f);
+            esc.source.clip = esc.running;
+            esc.source.Play();
+        }
+        // Update lastPosition for the next frame
+        esc.lastPosition = esc.transform.position;
         esc.m_Agent.destination = esc.player.transform.position;
     }
 

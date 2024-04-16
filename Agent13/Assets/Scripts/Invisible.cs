@@ -6,7 +6,7 @@ using UnityEngine.XR;
 public class Invisible : MonoBehaviour
 {
     public bool invisible = false;
-    public float inactivityThreshold = 1f; 
+    private float inactivityThreshold = .75f; 
     private float timeSinceLastMovement = 0f;
     private Vector3 lastPosition;
     public GameObject invis;

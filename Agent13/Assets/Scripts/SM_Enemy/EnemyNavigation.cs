@@ -56,15 +56,26 @@ public class EnemyNavigation : EnemyState
 
     public override void Act()
     {
-        esc.source.clip = esc.footsteps;
-        esc.source.Play();
+        // If the character has moved and the audio is not currently playing
+        if (esc.transform.position != esc.lastPosition && !esc.source.isPlaying)
+        {
+            esc.source.pitch = Random.Range(0.9f, 1.2f);
+            esc.source.volume = Random.Range(0.4f, 1f);
+            esc.source.clip = esc.footsteps;
+            esc.source.Play();
+        }
+        // Update lastPosition for the next frame
+        esc.lastPosition = esc.transform.position;
         esc.m_Agent.destination = CurrentDestination.position;
 
+        /**
         esc.CastRay(esc.transform.forward); //Forward
         esc.CastRay(Quaternion.AngleAxis(-30, esc.transform.up) * esc.transform.forward); // Slightly left
         esc.CastRay(Quaternion.AngleAxis(30, esc.transform.up) * esc.transform.forward); // Slightly right
         esc.CastRay(Quaternion.AngleAxis(-15, esc.transform.up) * esc.transform.forward); // Very Slightly left
         esc.CastRay(Quaternion.AngleAxis(15, esc.transform.up) * esc.transform.forward); // Very Slightly right
+        **/
+        esc.DetectPlayer();
     }
 
     public override void OnStateExit()

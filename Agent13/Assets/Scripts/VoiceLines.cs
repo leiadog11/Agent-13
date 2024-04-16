@@ -15,6 +15,7 @@ public class VoiceLines : MonoBehaviour
     public GameObject healthDisplay;
     public GameObject keycardDisplay;
     public GameObject gun;
+    public GameObject music;
     public GameObject[] enemies;
     private AudioSource source;
     private int line;
@@ -117,6 +118,7 @@ public class VoiceLines : MonoBehaviour
                 StartCoroutine(WaitForLine(4.1f));
                 break;
             case 10:
+                music.GetComponent<AudioSource>().Play();
                 move.SetActive(true);
                 turn.SetActive(true);
                 invis.SetActive(true);
@@ -155,9 +157,7 @@ public class VoiceLines : MonoBehaviour
             case 11:
                 foreach (GameObject enemy in enemies)
                 {
-                    enemy.GetComponent<EnemyStateController>().SetState(new EnemyIdle(enemy.GetComponent<EnemyStateController>()));
-                    enemy.GetComponent<NavMeshAgent>().speed = 0;
-                    enemy.GetComponent<NavMeshAgent>().acceleration = 0;
+                    enemy.SetActive(false);
                 }
                 move.SetActive(false);
                 turn.SetActive(false);
@@ -177,9 +177,7 @@ public class VoiceLines : MonoBehaviour
             case 14:
                 foreach (GameObject enemy in enemies)
                 {
-                    enemy.GetComponent<EnemyStateController>().SetState(new EnemyIdle(enemy.GetComponent<EnemyStateController>()));
-                    enemy.GetComponent<NavMeshAgent>().speed = 0;
-                    enemy.GetComponent<NavMeshAgent>().acceleration = 0;
+                    enemy.SetActive(false);
                 }
                 move.SetActive(false);
                 turn.SetActive(false);
@@ -195,9 +193,7 @@ public class VoiceLines : MonoBehaviour
             case 16:
                 foreach (GameObject enemy in enemies)
                 {
-                    enemy.GetComponent<EnemyStateController>().SetState(new EnemyIdle(enemy.GetComponent<EnemyStateController>()));
-                    enemy.GetComponent<NavMeshAgent>().speed = 0;
-                    enemy.GetComponent<NavMeshAgent>().acceleration = 0;
+                    enemy.SetActive(false);
                 }
                 move.SetActive(false);
                 turn.SetActive(false);
@@ -212,12 +208,16 @@ public class VoiceLines : MonoBehaviour
                 DestroyAreaThree();
                 break;
             case 19:
+                foreach (GameObject enemy in enemies)
+                {
+                    enemy.SetActive(false);
+                }
                 keycardDisplay.SetActive(true);
                 move.SetActive(false);
                 turn.SetActive(false);
                 source.clip = line19;
                 source.Play();
-                StartCoroutine(Reactivate2(12.1f));
+                StartCoroutine(Reactivate(12.1f));
                 DestroyAreaFour();
                 break;
             case 20:
@@ -237,17 +237,9 @@ public class VoiceLines : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         foreach (GameObject enemy in enemies)
         {
-            enemy.GetComponent<NavMeshAgent>().speed = 5;
-            enemy.GetComponent<NavMeshAgent>().acceleration = 8;
+            enemy.SetActive(true);
+            enemy.GetComponent<EnemyStateController>().SetState(new EnemyIdle(enemy.GetComponent<EnemyStateController>()));
         }
-        source.Stop();
-        move.SetActive(true);
-        turn.SetActive(true);
-    }
-
-    public IEnumerator Reactivate2(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
         source.Stop();
         move.SetActive(true);
         turn.SetActive(true);

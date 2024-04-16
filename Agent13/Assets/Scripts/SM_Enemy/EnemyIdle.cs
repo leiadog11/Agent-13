@@ -48,11 +48,14 @@ public class EnemyIdle : EnemyState
 
     public override void Act()
     {
+        /*
         esc.CastRay(esc.transform.forward); //Forward
         esc.CastRay(Quaternion.AngleAxis(-30, esc.transform.up) * esc.transform.forward); // Slightly left
         esc.CastRay(Quaternion.AngleAxis(30, esc.transform.up) * esc.transform.forward); // Slightly right
         esc.CastRay(Quaternion.AngleAxis(-15, esc.transform.up) * esc.transform.forward); // Very Slightly left
         esc.CastRay(Quaternion.AngleAxis(15, esc.transform.up) * esc.transform.forward); // Very Slightly right
+        */
+        esc.DetectPlayer();
     }
 
     public override void OnStateExit()

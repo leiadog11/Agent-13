@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -12,7 +13,7 @@ public class Jorb : XRGrabInteractable
     private bool canRotate;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         canRotate = true;
         source = GetComponent<AudioSource>();
@@ -35,6 +36,15 @@ public class Jorb : XRGrabInteractable
         base.OnSelectEntering(args);
         gameManager.GetComponent<GameManager>().jorb = true;
         StartCoroutine(Collect());
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            gameManager.GetComponent<GameManager>().jorb = true;
+            StartCoroutine(Collect());
+        }
     }
 
     IEnumerator Collect()
